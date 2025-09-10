@@ -25,6 +25,3 @@
 작성자 : 윤상배 
 
 [plan](./plan.pdf)
-<iframe src="./plan.pdf" width="100%" height="500px">
-    <p>문서 원본</p>
-</iframe> 
