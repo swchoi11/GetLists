@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
-from models.models import CafeCreateRequest, CafeResponse, StandardResponse, CafeListResponse
+from models.models import CafeCreateRequest, CafeUpdateRequest, CafeResponse, StandardResponse, CafeListResponse
 from database import db_manager
 
 router = APIRouter()
@@ -42,3 +42,30 @@ def get_all_cafes():
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.put("/cafes/{cafe_id}", response_model=StandardResponse)
+def update_cafe(cafe_id: int, request: CafeUpdateRequest):
+    try:
+        db_manager.update_cafe(
+            cafe_id=cafe_id,
+            cafe_name=request.cafe_name,
+            description=request.description,
+            rating=request.rating
+        )
+        return StandardResponse(
+            status="success",
+            message=f"Cafe {cafe_id} updated successfully"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.delete("/cafes/{cafe_id}", response_model=StandardResponse)
+def delete_cafe(cafe_id: int):
+    try:
+        db_manager.delete_cafe(cafe_id)
+        return StandardResponse(
+            status="success",
+            message=f"Cafe {cafe_id} deleted successfully"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) 

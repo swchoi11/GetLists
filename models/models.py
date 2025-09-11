@@ -7,6 +7,11 @@ class CafeCreateRequest(BaseModel):
     description: Optional[str] = None
     rating: Optional[float] = None
 
+class CafeUpdateRequest(BaseModel):
+    cafe_name: Optional[str] = None
+    description: Optional[str] = None
+    rating: Optional[float] = None
+
 class CafeResponse(BaseModel):
     id: int
     cafe_name: str
@@ -23,3 +28,4 @@ class CafeListResponse(BaseModel):
     cafes: list[CafeResponse]
     total_count: int
 
+    

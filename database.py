@@ -54,5 +54,59 @@ class DatabaseManager:
         cafes = cursor.fetchall()
         conn.close()
         return cafes
+
+    def get_cafe_by_id(self, cafe_id):
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT id, cafe_name, description, rating, create_time
+            FROM cafes
+            WHERE id = ?
+        ''', (cafe_id,))
+        
+        cafe = cursor.fetchone()
+        conn.close()
+        return cafe
+
+    def update_cafe(self, cafe_id, cafe_name=None, description=None, rating=None):
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        
+        # Build dynamic update query
+        updates = []
+        params = []
+        
+        if cafe_name is not None:
+            updates.append("cafe_name = ?")
+            params.append(cafe_name)
+        if description is not None:
+            updates.append("description = ?")
+            params.append(description)
+        if rating is not None:
+            updates.append("rating = ?")
+            params.append(rating)
+        
+        if not updates:
+            conn.close()
+            return
+            
+        params.append(cafe_id)
+        query = f"UPDATE cafes SET {', '.join(updates)} WHERE id = ?"
+        
+        cursor.execute(query, params)
+        conn.commit()
+        conn.close()
+
+    def delete_cafe(self, cafe_id):
+        conn = self.get_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            DELETE FROM cafes WHERE id = ?
+        ''', (cafe_id,))
+        
+        conn.commit()
+        conn.close()
     
 db_manager = DatabaseManager()
