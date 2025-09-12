@@ -1,4 +1,6 @@
 # database.py
+## 데이터 접근 레이어(DAO/Repository)
+## 스키마 초기화, SQL 작성/실행, 트랜잭션/커넥션 관리, 결과 반환
 
 import sqlite3
 from datetime import datetime
@@ -47,6 +49,7 @@ class DatabaseManager:
         conn.close()
         return rid
 
+    # 전체 조회
     def get_all_restaurants(self):
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -59,6 +62,7 @@ class DatabaseManager:
         conn.close()
         return rows
 
+    # 단일 조회
     def get_restaurant_by_id(self, restaurant_id: int):
         conn = self.get_connection()
         cursor = conn.cursor()

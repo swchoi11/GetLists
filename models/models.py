@@ -1,3 +1,6 @@
+# models/models.py
+## request/response 정의
+
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
@@ -18,7 +21,7 @@ class RestaurantUpdateRequest(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     category: Optional[str] = None
-    rating: Optiona[float] = None
+    rating: Optional[float] = None
     address: Optional[str] = None
 
 class RestaurantResponse(BaseModel):
@@ -28,7 +31,7 @@ class RestaurantResponse(BaseModel):
     category: Optional[str] = None
     rating: Optional[float] = None
     address: Optional[str] = None
-    create_time: str
+    create_time: datetime
 
 class RestaurantListResponse(BaseModel):
     status: str

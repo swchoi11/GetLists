@@ -1,4 +1,6 @@
 # routes/restaurant.py
+## HTTP 인터페이스(컨트롤러/라우팅 레이어)
+## 요청 검증(Pydantic) → DB 레이어 호출 → 응답 모델로 직렬화 → HTTP 상태코드/에러 변환
 
 from fastapi import APIRouter, HTTPException
 from models.models import (
@@ -9,6 +11,7 @@ from models.models import (
     RestaurantListResponse,
 )
 from database import db_restaurant as db_manager
+from datetime import datetime
 
 router = APIRouter()
 
@@ -35,6 +38,15 @@ def get_all_restaurants():
         rows = db_manager.get_all_restaurants()
         items = []
         for r in rows:
+            ct = r[6]
+            if isinstance(ct, str):
+                if ct.endswith("Z"):
+                    ct = ct[:-1] + "+00:00"
+                try:
+                    ct = datetime.fromisoformat(ct)
+                except ValueError:
+                    ct = datetime.fromisoformat(ct.replace.(" ", "T"))
+
             items.append(
                 RestaurantResponse(
                     id=r[0],
@@ -43,7 +55,7 @@ def get_all_restaurants():
                     category=r[3],
                     rating=r[4],
                     address=r[5],
-                    create_time=r[6],
+                    create_time=ct,
                 )
             )
         return RestaurantListResponse(
@@ -52,7 +64,7 @@ def get_all_restaurants():
             total_count=len(items),
         )
     except Exception as e:
-        raise HTTPException(status_code=500, deta
+        raise HTTPException(status_code=500, detail=str(e))
         
 @router.put("/restaurants/{restaurant_id}", response_model=StandardResponse)
 def update_restaurant(restaurant_id: int, request: RestaurantUpdateRequest):
