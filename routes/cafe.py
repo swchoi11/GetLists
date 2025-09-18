@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
 from models.models import CafeCreateRequest, CafeUpdateRequest, CafeResponse, StandardResponse, CafeListResponse
-from database import db_manager
+from database import db_cafe as db_manager
 
 router = APIRouter()
 
