@@ -56,10 +56,6 @@ class CafeResponse(BaseModel):
     rating: Optional[float] = None
     create_time: str
 
-class StandardResponse(BaseModel):
-    status: str
-    message: Optional[str] = None
-
 class CafeListResponse(BaseModel):
     status: str
     cafes: list[CafeResponse]

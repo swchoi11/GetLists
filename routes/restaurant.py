@@ -34,22 +34,23 @@ def create_restaurant(request: RestaurantCreateRequest):
 @router.get("/restaurants", response_model=RestaurantListResponse)
 def get_all_restaurants():
     try:
-        res_data = db_manager.get_all_restaurants()
+        rows = db_manager.get_all_restaurants()
         restaurants = []
-        for res_row in res_data:
-            res = RestaurantResponse(
-                    id=res_row[0],
-                    name=res_row[1],
-                    description=res_row[2],
-                    category=res_row[3],
-                    rating=res_row[4],
-                    address=res_row[5],
-                    create_time=res_row[6],
-                )
+        for r in rows:
+            restaurants.append(
+                RestaurantResponse(
+                    id=r[0],
+                    name=r[1],
+                    description=r[2],
+                    category=r[3],
+                    rating=r[4],
+                    address=r[5],
+                    create_time=r[6],
+                ))
             
         return RestaurantListResponse(
             status="success",
-            restaurants=items,
+            restaurants=restaurants,
             total_count=len(restaurants),
         )
     except Exception as e:
