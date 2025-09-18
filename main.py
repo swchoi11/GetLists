@@ -2,10 +2,12 @@
 
 from fastapi import FastAPI
 from routes.restaurant import router as restaurant_router
+from routes.cafe import router as cafe_router
 
 app = FastAPI()
 
 app.include_router(restaurant_router, prefix="/api", tags=["restaurants"])
+app.include_router(cafe_router, prefix="/api", tags=["cafes"])
 
 @app.get("/")
 def root():
