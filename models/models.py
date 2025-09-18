@@ -32,7 +32,7 @@ class RestaurantResponse(BaseModel):
     category: Optional[str] = None
     rating: Optional[float] = None
     address: Optional[str] = None
-    create_time: datetime
+    create_time: str
 
 class RestaurantListResponse(BaseModel):
     status: str
